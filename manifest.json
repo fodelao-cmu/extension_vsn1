@@ -1,0 +1,11 @@
+{
+    "name": "Intento 1 Extension",
+    "description": "Extension erstes mal der malicious ist",
+    "version": "1.0",
+    "manifest_version": 3,
+    "actions": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    }
+}
+
