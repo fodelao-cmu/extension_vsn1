@@ -15,15 +15,28 @@
     document.head.appendChild(style);
   }
 
+  function sendMatches(matches) {
+    if (matches && matches.length > 0) {
+      chrome.runtime.sendMessage({
+        type: "DETECTED",
+        data: matches
+      }, (response) => {
+        console.log("Matches sent to background:", matches);
+      });
+    }
+  }
+
   function init() {
     injectStyle();
-    walkAndHighlight(document.body, currencyRegex);
+    const matches = walkAndHighlight(document.body, currencyRegex);
+    sendMatches(matches);
   }
 
   init();
 
   new MutationObserver(() => {
-    walkAndHighlight(document.body, currencyRegex);
+    const matches = walkAndHighlight(document.body, currencyRegex);
+    sendMatches(matches);
   }).observe(document.body, { childList: true, subtree: true });
 
 })();

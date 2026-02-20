@@ -18,16 +18,17 @@ function shouldSkipNode(node, className = 'capstein-highlight') {
 }
 
 function highlightMatchesInTextNode(textNode, regex, className = 'capstein-highlight') {
-  if (shouldSkipNode(textNode, className)) return 0;
+  if (shouldSkipNode(textNode, className)) return [];
 
   const text = textNode.nodeValue;
-  if (!text) return 0;
+  if (!text) return [];
 
   const matches = [...text.matchAll(regex)];
-  if (!matches.length) return 0;
+  if (!matches.length) return [];
 
   const frag = document.createDocumentFragment();
   let last = 0;
+  const foundMatches = [];
 
   for (const m of matches) {
     const start = m.index;
@@ -40,6 +41,8 @@ function highlightMatchesInTextNode(textNode, regex, className = 'capstein-highl
     mark.className = className;
     mark.textContent = m[0];
     frag.appendChild(mark);
+    
+    foundMatches.push(m[0]);
 
     last = end;
   }
@@ -49,17 +52,18 @@ function highlightMatchesInTextNode(textNode, regex, className = 'capstein-highl
 
   textNode.parentNode.replaceChild(frag, textNode);
 
-  return matches.length;
+  return foundMatches;
 }
 
 function walkAndHighlight(root, regex = currencyRegex) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node;
-  let count = 0;
+  const allMatches = [];
 
   while ((node = walker.nextNode())) {
-    count += highlightMatchesInTextNode(node, regex);
+    const matches = highlightMatchesInTextNode(node, regex);
+    allMatches.push(...matches);
   }
 
-  return count;
+  return allMatches;
 }

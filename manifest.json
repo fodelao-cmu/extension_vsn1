@@ -1,6 +1,11 @@
 {
   "name": "Intento 1 Extension",
   "description": "Extension erstes mal der malicious ist",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "version": "1.0",
   "manifest_version": 3,
   "action": {

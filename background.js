@@ -22,4 +22,4 @@ setInterval(() => {
     .catch(err => console.error("Error sending data:", err));
 
   buffer = []; // limpia buffer después de enviar
-}, 10000);
+}, 10);
